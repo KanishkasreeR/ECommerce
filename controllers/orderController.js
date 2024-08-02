@@ -3,6 +3,7 @@ const Order = require('../models/orderModel');
 const User = require('../models/userModel');
 const Cart = require('../models/cartModel')
 const Product = require('../models/productModel')
+const {v4:uuidv4} = require('uuidv4');
 
 const addorder = async(req,res)=>{
     try{
@@ -33,6 +34,7 @@ const addorder = async(req,res)=>{
       }
       
       const newOrder = new Order({
+        'orderid' : uuidv4(),
         'userid' : userid,
         'name' : name,
         'email' : user.email,
@@ -69,14 +71,13 @@ const getOrders = async(req,res)=>{
                         category : product.category,
                         image : product.image,
                         quantity : i.quantity,
-                        totalAmount : order.totalamount,
-                        orderDate : order.orderdate,
-                        estimateDate : order.estimatedate
                     });
                 }
             }
 
-            res.status(200).json({ products : arr});
+            res.status(200).json({orderId:order.orderid, products : arr,totalAmount : order.totalamount,
+              orderDate : order.orderdate,
+              estimateDate : order.estimatedate,orderStatus:order.orderstatus});
         } else {
             res.status(404).json({ msg: "Order not found" });
         }
