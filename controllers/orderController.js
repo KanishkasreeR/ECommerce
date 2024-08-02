@@ -51,5 +51,40 @@ const addorder = async(req,res)=>{
     }
 }
 
-module.exports = {addorder}
+const getOrders = async(req,res)=>{
+  try{
+    const userid = req.user;
+
+        const order = await Order.findOne({ userid });
+        if (order) {
+            const arr = [];
+            for (const i of order.products) {
+                const product = await Product.findOne({ id: i.productid }); 
+                if (product) {
+                    
+                    arr.push({
+                        title : product.title,
+                        description : product.description,
+                        price : product.price,
+                        category : product.category,
+                        image : product.image,
+                        quantity : i.quantity,
+                        totalAmount : order.totalamount,
+                        orderDate : order.orderdate,
+                        estimateDate : order.estimatedate
+                    });
+                }
+            }
+
+            res.status(200).json({ products : arr});
+        } else {
+            res.status(404).json({ msg: "Order not found" });
+        }
+  }
+  catch(error){
+    res.status(500).json({error:"Internal Server Error"})
+  }
+}
+
+module.exports = {addorder,getOrders}
 
