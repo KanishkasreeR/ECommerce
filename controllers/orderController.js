@@ -3,7 +3,7 @@ const Order = require('../models/orderModel');
 const User = require('../models/userModel');
 const Cart = require('../models/cartModel')
 const Product = require('../models/productModel')
-const {v4:uuidv4} = require('uuidv4');
+const {v4:uuidv4} = require('uuid');
 
 const addorder = async(req,res)=>{
     try{
