@@ -3,8 +3,7 @@ const Product = require('../models/productModel');
 
 const getAllProducts = async(req,res)=>{
    try{
-    const id = req.params.id;
-    const product = await Product.find(id);
+    const product = await Product.find();
     if(product){
       res.status(200).send(product)
     }
